@@ -1,8 +1,22 @@
 # Visa Security Code Reviewer
 
-**A full-stack AI tool that reviews code for security vulnerabilities using an LLM, with a FastAPI backend, MySQL storage, and a productivity-metrics dashboard.**
+### Live Dashboard → _deploying — link added here after deployment_
 
-This project models the work of Visa's Cybersecurity — Product Security Engineering team: hands-on generative AI, full-stack development (backend + APIs + frontend), infusing AI into engineering practices, and quantifying the productivity gain with metrics.
+![AI Security Code Reviewer — paste or upload code and get severity-rated findings](docs/review-page.png)
+![Productivity metrics dashboard — vulnerabilities, severity, types, and risk trend](docs/metrics-dashboard.png)
+
+**Paste or upload code and an LLM flags security vulnerabilities — severity-rated, each with a suggested fix — while a productivity dashboard quantifies the reviewer-time saved.**
+
+---
+
+This project models the work of Visa's Cybersecurity — Product Security Engineering team: hands-on generative AI, full-stack development (backend + APIs + frontend), infusing AI into engineering practices, and quantifying the productivity gain with metrics. A developer submits a snippet, an LLM reviews it for vulnerabilities (injection, hardcoded secrets, broken auth, and similar OWASP issues) and returns structured findings, every scan is persisted, and a metrics dashboard turns that history into a productivity story — vulnerabilities caught, reviewer-time saved, scan activity, and a risk trend.
+
+## Job Posting
+
+- **Role:** Software Engineer (Generative AI / Full-Stack) — Cybersecurity, Product Security Engineering
+- **Company:** Visa Inc.
+
+This project demonstrates the role's core deliverables: hands-on generative AI, full-stack development (backend, databases, API creation and consumption, frontend UI), infusing AI into engineering practices, test-driven development with CI, and showcasing the productivity improvement with metrics.
 
 ## Architecture
 
@@ -22,6 +36,7 @@ Streamlit client  ──HTTP──>  FastAPI  ──>  Claude (claude-haiku-4-5)
 | LLM | Anthropic Claude (`claude-haiku-4-5`), LLM-only detection |
 | Database | MySQL via SQLAlchemy (SQLite for tests/local) |
 | Frontend | Streamlit (thin API client) |
+| Visualisation | Altair (Storytelling with Data styling) |
 | Testing | pytest (schemas, scoring, parser, API endpoints) |
 | CI | GitHub Actions (pytest on every push) |
 
