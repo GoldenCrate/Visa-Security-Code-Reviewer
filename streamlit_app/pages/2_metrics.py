@@ -10,16 +10,19 @@ st.set_page_config(page_title="Productivity Metrics", page_icon="📊", layout="
 # Mute everything to grey; spend colour sparingly on what demands attention.
 GREY = "#bfbfbf"
 ACCENT = "#c00000"   # reserved for the elements we want the eye drawn to
+LINE = "#8c8c8c"
 TEXT = "#595959"
+GRID = "#ebebeb"
 SEVERITY_ORDER = ["critical", "high", "medium", "low"]
 
 
-def declutter(chart):
-    """Strip chart junk (SWD step 3): no border, no gridlines, soft axes."""
+def style(chart):
+    """Soft, gridded styling: keep a light background grid, mute the chrome."""
     return (
         chart.configure_view(stroke=None)
         .configure_axis(
-            grid=False,
+            grid=True,
+            gridColor=GRID,
             domainColor="#d9d9d9",
             tickColor="#d9d9d9",
             labelColor=TEXT,
@@ -69,26 +72,16 @@ left, right = st.columns(2)
 # --- Findings by severity: highlight high/critical, mute the rest (SWD step 4) ---
 with left:
     sev_df = pd.DataFrame({"severity": list(sev.keys()), "count": list(sev.values())})
-    base = alt.Chart(sev_df).encode(
+    sev_chart = alt.Chart(sev_df).mark_bar(size=46).encode(
         x=alt.X("severity:N", sort=SEVERITY_ORDER, title=None, axis=alt.Axis(labelAngle=0)),
-        y=alt.Y("count:Q", title=None, axis=None),
-    )
-    bars = base.mark_bar(size=46).encode(
+        y=alt.Y("count:Q", title="Findings"),
         color=alt.condition(
             alt.FieldOneOfPredicate(field="severity", oneOf=["critical", "high"]),
             alt.value(ACCENT),
             alt.value(GREY),
-        )
-    )
-    labels = base.mark_text(dy=-7, color=TEXT, fontSize=13).encode(text="count:Q")
-    st.altair_chart(
-        declutter(
-            (bars + labels).properties(
-                title="High & critical issues are where to focus", height=300
-            )
         ),
-        use_container_width=True,
-    )
+    ).properties(title="High & critical issues are where to focus", height=300)
+    st.altair_chart(style(sev_chart), use_container_width=True)
 
 # --- Findings by type: rank by frequency, highlight the most common (SWD step 4) ---
 with right:
@@ -97,42 +90,27 @@ with right:
         {"type": list(by_type.keys()), "count": list(by_type.values())}
     ).sort_values("count", ascending=False)
     top_type = str(type_df.iloc[0]["type"])
-    base_t = alt.Chart(type_df).encode(
+    type_chart = alt.Chart(type_df).mark_bar(size=22).encode(
         y=alt.Y("type:N", sort="-x", title=None),
-        x=alt.X("count:Q", title=None, axis=None),
-    )
-    bars_t = base_t.mark_bar(size=22).encode(
+        x=alt.X("count:Q", title="Findings"),
         color=alt.condition(
             alt.FieldEqualPredicate(field="type", equal=top_type),
             alt.value(ACCENT),
             alt.value(GREY),
-        )
-    )
-    labels_t = base_t.mark_text(dx=8, align="left", color=TEXT, fontSize=13).encode(
-        text="count:Q"
-    )
-    st.altair_chart(
-        declutter(
-            (bars_t + labels_t).properties(
-                title="Most common vulnerability types", height=300
-            )
         ),
-        use_container_width=True,
-    )
+    ).properties(title="Most common vulnerability types", height=300)
+    st.altair_chart(style(type_chart), use_container_width=True)
 
-# --- Risk trend: change over time, latest point accented (SWD steps 2 & 4) ---
+# --- Risk trend: change over time, latest points accented (SWD steps 2 & 4) ---
 trend = m["risk_trend"]
 if len(trend) > 1:
     trend_df = pd.DataFrame(trend)
     line = alt.Chart(trend_df).mark_line(
-        color=GREY, point=alt.OverlayMarkDef(color=ACCENT, size=60)
+        color=LINE, point=alt.OverlayMarkDef(color=ACCENT, size=60)
     ).encode(
         x=alt.X("scan_id:O", title="Scan"),
-        y=alt.Y("risk_score:Q", title="Risk score"),
-    )
-    st.altair_chart(
-        declutter(line.properties(title="Risk score across scans", height=280)),
-        use_container_width=True,
-    )
+        y=alt.Y("risk_score:Q", title="Risk score", scale=alt.Scale(domain=[0, 100])),
+    ).properties(title="Risk score across scans", height=300)
+    st.altair_chart(style(line), use_container_width=True)
 else:
     st.caption("Run more scans to see the risk-score trend over time.")

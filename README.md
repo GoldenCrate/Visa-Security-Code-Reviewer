@@ -42,6 +42,7 @@ The dashboard reports vulnerabilities caught (by severity and type), scan activi
 2. Copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY` (and `DATABASE_URL` for MySQL).
 3. Backend: `uvicorn app.main:app --reload` (Swagger at http://localhost:8000/docs)
 4. Frontend: `streamlit run streamlit_app/app.py`
+5. *(Optional)* `python seed_data.py` — populate the dashboard with synthetic demo scans so the metrics charts have a realistic spread to show. Demo data only; real scans come from the Review page.
 
 ## Testing
 
