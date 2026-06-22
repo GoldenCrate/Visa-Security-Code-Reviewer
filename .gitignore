@@ -219,4 +219,5 @@ __marimo__/
 
 # Local database artifacts
 app.db
+*.sqlite
 *.sqlite3
