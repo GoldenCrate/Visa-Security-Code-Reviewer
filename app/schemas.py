@@ -56,6 +56,12 @@ class ScanOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class RiskTrendItem(BaseModel):
+    scan_id: int
+    created_at: str | None
+    risk_score: float
+
+
 class MetricsResponse(BaseModel):
     total_scans: int
     total_findings: int
@@ -64,4 +70,4 @@ class MetricsResponse(BaseModel):
     time_saved_minutes: float
     findings_by_severity: dict[str, int]
     findings_by_type: dict[str, int]
-    risk_trend: list[dict]
+    risk_trend: list[RiskTrendItem]
