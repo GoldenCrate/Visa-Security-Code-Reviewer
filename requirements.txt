@@ -1,0 +1,14 @@
+fastapi==0.138.0
+uvicorn[standard]==0.49.0
+sqlalchemy==2.0.35
+pydantic==2.13.4
+pydantic-settings==2.14.2
+anthropic==0.111.0
+pymysql==1.1.1
+cryptography==43.0.1
+requests==2.32.3
+streamlit==1.47.1
+altair==5.4.1
+pandas==2.3.3
+pytest==8.3.3
+httpx==0.27.2
