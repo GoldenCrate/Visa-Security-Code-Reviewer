@@ -26,7 +26,7 @@ class Finding(Base):
     __tablename__ = "findings"
 
     id = Column(Integer, primary_key=True, index=True)
-    scan_id = Column(Integer, ForeignKey("scans.id"), nullable=False)
+    scan_id = Column(Integer, ForeignKey("scans.id"), nullable=False, index=True)
     vuln_type = Column(String(128), nullable=False)
     severity = Column(String(16), nullable=False)
     line_start = Column(Integer, nullable=False, default=0)
