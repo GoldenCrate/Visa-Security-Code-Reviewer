@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -5,6 +6,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import streamlit as st
+
+# Bridge the API_URL secret into an env var so the (Streamlit-free) API client sees it.
+try:
+    if "API_URL" in st.secrets:
+        os.environ["API_URL"] = st.secrets["API_URL"]
+except Exception:
+    pass
 
 from streamlit_app.api_client import submit_scan
 
