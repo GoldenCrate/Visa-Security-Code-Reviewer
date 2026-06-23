@@ -1,6 +1,6 @@
 # Visa Security Code Reviewer
 
-### Live Dashboard → _deploying — link added here after deployment_
+### [Live Dashboard →](https://visa-security-code-reviewer-7qdmttedq3uik7fnmqwo9z.streamlit.app/)
 
 ![AI Security Code Reviewer — paste or upload code and get severity-rated findings](docs/review-page.png)
 ![Productivity metrics dashboard — vulnerabilities, severity, types, and risk trend](docs/metrics-dashboard.png)
