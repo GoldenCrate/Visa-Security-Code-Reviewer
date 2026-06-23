@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+# Ensure the repo root is importable (Streamlit Cloud doesn't add it by default).
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 import altair as alt
 import pandas as pd
 import streamlit as st
